@@ -62,6 +62,16 @@ export class PepperMintCli {
     this.validateParameters(this.command, commandParams);
   };
 
+  /**
+   * @private
+   * 
+   * Validate all the parameters and run the command
+   * with the parameters :slight_smile:
+   * 
+   * @param command The command
+   * @param params The params
+   * @returns 
+   */
   private validateParameters = (command:string, params:Map<string, string>):void | null => {
     if(!Array.from(commands.keys()).includes(command)){
       const exception = new PepperMintException({

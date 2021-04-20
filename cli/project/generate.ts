@@ -12,7 +12,11 @@ export interface ProjecConfig {
 
 export class GenerateProject {
     private config:ProjecConfig
-    
+
+    /**
+     * @constructor
+     * @param {ProjecConfig} config The project configuration information
+     */
     constructor(config:ProjecConfig) {
         this.config = config
 
@@ -28,6 +32,15 @@ export class GenerateProject {
         }
     }
 
+    /**
+     * @private
+     * 
+     * Find the path of the project
+     * based on the name of the project
+     * 
+     * @param name The name of the project
+     * @returns {string  | undefined}
+     */
     private findProjectPath = (name:string | undefined):string | undefined => {
         if(name){
             if(name == "."){
@@ -40,6 +53,17 @@ export class GenerateProject {
         }
     }
 
+    /**
+     * @private
+     * 
+     * Check if the path exists and the path is a directory
+     * if yes, proceed to check the length of the file content
+     * return true if the directory is empty, else false
+     * 
+     * @param path The path to verify
+     * @returns {boolean} Whether the directory is a valid directory
+     * to create the new project or not
+     */
     private verifyProjectFolder = (path:string):boolean => {
         if(this.fileExists(path)){
             if(statSync(path).isDirectory()){
@@ -51,6 +75,14 @@ export class GenerateProject {
         return true
     }
 
+    /**
+     * @private
+     * 
+     * Check if a path exists or not
+     * 
+     * @param name The path to check
+     * @returns {boolean} The path exists or not
+     */
     private fileExists = (name:string):boolean => {
         try {
             return existsSync(name)
