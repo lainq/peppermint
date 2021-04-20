@@ -7,6 +7,7 @@ export const colours:any = {
     reverse: "\x1b[7m",
     hidden: "\x1b[8m",
     
+    // forground colors
     fg: {
         black: "\x1b[30m",
         red: "\x1b[31m",
@@ -18,6 +19,8 @@ export const colours:any = {
         white: "\x1b[37m",
         crimson: "\x1b[38m"
     },
+
+    // background colors
     bg: {
         black: "\x1b[40m",
         red: "\x1b[41m",

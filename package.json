@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/pranavbaburaj/peppermint/issues"
   },
-  "homepage": "https://github.com/pranavbaburaj/peppermint#readme"
+  "homepage": "https://github.com/pranavbaburaj/peppermint#readme",
+  "dependencies": {
+    "@types/node": "^14.14.41"
+  }
 }
