@@ -1,6 +1,6 @@
 import {argv} from 'process';
 import {PepperMintException} from '../src/exceptions/exception';
-import { commands, performCommand } from './constants';
+import {commands, performCommand} from './constants';
 
 export class PepperMintCli {
   private readonly arguments: Array<string>;
@@ -64,41 +64,44 @@ export class PepperMintCli {
 
   /**
    * @private
-   * 
+   *
    * Validate all the parameters and run the command
    * with the parameters :slight_smile:
-   * 
+   *
    * @param command The command
    * @param params The params
-   * @returns 
+   * @returns
    */
-  private validateParameters = (command:string, params:Map<string, string>):void | null => {
-    if(!Array.from(commands.keys()).includes(command)){
+  private validateParameters = (
+    command: string,
+    params: Map<string, string>
+  ): void | null => {
+    if (!Array.from(commands.keys()).includes(command)) {
       const exception = new PepperMintException({
-        message : `Invalid command - ${command}`
-      }).throwException(true)
+        message: `Invalid command - ${command}`,
+      }).throwException(true);
 
-      return null
+      return null;
     }
 
-    const flags = commands.get(command)
-    if(flags){
-      const paramKeys = Array.from(params.keys())
-      for(let paramIndex=0; paramIndex<paramKeys.length; paramIndex++){
-        if(!flags.includes(paramKeys[paramIndex])){
+    const flags = commands.get(command);
+    if (flags) {
+      const paramKeys = Array.from(params.keys());
+      for (let paramIndex = 0; paramIndex < paramKeys.length; paramIndex++) {
+        if (!flags.includes(paramKeys[paramIndex])) {
           const exception = new PepperMintException({
-            message : `Invalid flag ${paramKeys[paramIndex]} for ${command}`,
-            suggestion : `Valid flags - ${flags.join(', ')}`
-          }).throwException(true)
-          return null
-        } 
+            message: `Invalid flag ${paramKeys[paramIndex]} for ${command}`,
+            suggestion: `Valid flags - ${flags.join(', ')}`,
+          }).throwException(true);
+          return null;
+        }
       }
 
-      performCommand(command, params)
+      performCommand(command, params);
     } else {
-      process.exit()
+      process.exit();
     }
-  }
+  };
 
   /**
    * @private
