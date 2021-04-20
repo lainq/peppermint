@@ -1,4 +1,5 @@
 import { commands } from "../constants";
+import { GenerateProject } from "./generate";
 import { PepperMintPrompt } from "./prompt";
 
 export class PepperMintProject {
@@ -10,10 +11,11 @@ export class PepperMintProject {
         this.params = params
 
         if(this.requiredParams){
-            const promptQueries = PepperMintProject.reduceFromArray(
-                this.requiredParams, Array.from(this.params.keys())
-            )
-            const prompt = new PepperMintPrompt(promptQueries).createConsolePrompt()
+            const project = new GenerateProject({
+                name : this.params.get("name"),
+                author : this.params.get("author"),
+                license : this.params.get("license")
+            })
         } 
     }
 
