@@ -13,6 +13,12 @@ export class PepperMintException {
     private file:string | undefined;
     private line:string | undefined;
 
+    /**
+     * @constructor
+     * 
+     * @param {PepperMintErrorParams} params The pappermintparameters contaning, messages, suggestion
+     * line and files
+     */
     constructor(params:PepperMintErrorParams){
         this.message = params.message;
         this.suggestion = params.suggestion;
@@ -20,6 +26,14 @@ export class PepperMintException {
         this.line = (params.line == undefined) ? "" : `at line ${params.line}`
     }
 
+    /**
+     * @public
+     * 
+     * Throw the exception
+     * 
+     * @param {boolean} fatal Whether to exit from the program after the
+     * error or not
+     */
     public throwException(fatal:boolean){
         console.log(throwColoredText(colours.fg.red, this.message))
         if(this.file){

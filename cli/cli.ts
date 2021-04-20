@@ -8,6 +8,10 @@ export class PepperMintCli {
 
     private position:number = 0;
 
+    /**
+     * @constructor
+     * @param {Array<string> | undefined} args The list of command arguments
+     */
     constructor(args?:Array<string>) {
         this.arguments = args == undefined ? argv : args
         this.length = this.arguments.length
@@ -23,6 +27,13 @@ export class PepperMintCli {
         }
     }
 
+    /**
+     * @public
+     * 
+     * parse all the command arguments and 
+     * gather all the params by parsing through
+     * the flags and values
+     */
     public parseCommandArguments = ():void | null => {
         let current:string | null = this.currentArgument()
         let commandParams:Map<string, string> = new Map<string, string>();
@@ -50,6 +61,14 @@ export class PepperMintCli {
         console.log(commandParams)
     }
 
+    /**
+     * @private
+     * 
+     * Get the current character or return null
+     * if reached the end of the array
+     * 
+     * @returns {string | null} Current character or null
+     */
     private currentArgument = ():string | null => {
         if(this.length == this.position){
             return null
