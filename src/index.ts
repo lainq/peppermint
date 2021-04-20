@@ -1,4 +1,3 @@
-import { PepperMintCli } from "../cli/cli";
+import {PepperMintCli} from '../cli/cli';
 
-const args:PepperMintCli = new PepperMintCli(process.argv.slice(2))
-
+const args: PepperMintCli = new PepperMintCli(process.argv.slice(2));
