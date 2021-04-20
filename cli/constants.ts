@@ -1,7 +1,7 @@
 import { PepperMintProject } from "./project/init"
 
 export const commands:Map<string, Array<string>> = new Map<string, Array<string>>([
-    ["init", ["name", "config", "license", "author"]]
+    ["init", ["name", "license", "author"]]
 ])
 
 

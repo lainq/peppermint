@@ -1,12 +1,5 @@
 import { commands } from "../constants";
-
-export interface ProjectConfig {
-    projectName : string
-    directory : string
-    license? : string
-    author? : string
-    entryPoint : string
-}
+import { PepperMintPrompt } from "./prompt";
 
 export class PepperMintProject {
     private params:Map<string, string>;
@@ -20,10 +13,8 @@ export class PepperMintProject {
             const promptQueries = PepperMintProject.reduceFromArray(
                 this.requiredParams, Array.from(this.params.keys())
             )
-            console.log(promptQueries)
-        } else {
-            process.exit()
-        }
+            const prompt = new PepperMintPrompt(promptQueries).createConsolePrompt()
+        } 
     }
 
     public static reduceFromArray = (array:Array<any>, remove:Array<any>) => {
