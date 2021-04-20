@@ -1,5 +1,6 @@
 import {argv} from 'process';
 import {PepperMintException} from '../src/exceptions/exception';
+import { commands, performCommand } from './constants';
 
 export class PepperMintCli {
   private readonly arguments: Array<string>;
@@ -58,8 +59,36 @@ export class PepperMintCli {
       this.position += 1;
       current = this.currentArgument();
     }
-    console.log(commandParams);
+    this.validateParameters(this.command, commandParams);
   };
+
+  private validateParameters = (command:string, params:Map<string, string>):void | null => {
+    if(!Array.from(commands.keys()).includes(command)){
+      const exception = new PepperMintException({
+        message : `Invalid command - ${command}`
+      }).throwException(true)
+
+      return null
+    }
+
+    const flags = commands.get(command)
+    if(flags){
+      const paramKeys = Array.from(params.keys())
+      for(let paramIndex=0; paramIndex<paramKeys.length; paramIndex++){
+        if(!flags.includes(paramKeys[paramIndex])){
+          const exception = new PepperMintException({
+            message : `Invalid flag ${paramKeys[paramIndex]} for ${command}`,
+            suggestion : `Valid flags - ${flags.join(', ')}`
+          }).throwException(true)
+          return null
+        } 
+      }
+
+      performCommand(command, params)
+    } else {
+      process.exit()
+    }
+  }
 
   /**
    * @private
