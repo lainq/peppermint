@@ -2,6 +2,7 @@ import {existsSync, mkdirSync, readdirSync, statSync, writeFile} from 'fs';
 import {join} from 'path';
 import {cwd} from 'process';
 import {PepperMintException} from '../../src/exceptions/exception';
+import { PepperMintProjectStore } from './store';
 
 export interface ProjectConfig {
   name?: string;
@@ -59,6 +60,7 @@ export class GenerateProject {
       mkdirSync(join(this.config.path, folder))
     })
 
+    this.files.files.set(`.peppermint`, this.generateConfigFiles(this.config))
     Array.from(this.files.files.keys()).forEach((key:string) => {
       if(this.config.path){
         const data = this.files.files.get(key) || " "
@@ -71,6 +73,23 @@ export class GenerateProject {
         })
       }
     })
+
+    if(this.config.name && this.config.path){
+      const store = new PepperMintProjectStore(
+        this.config.name,
+        this.config.path
+      ).storeProjectInformation()
+    }
+  }
+
+  private generateConfigFiles = (data:ProjectConfig):string => {
+    return JSON.stringify({
+      name : data.name,
+      path : data.path,
+      author : data.author || "",
+      license : data.license || "",
+      main : data.path ? join(data.path, "app.ppm") : ""
+    }, undefined, 4)
   }
 
   /**
