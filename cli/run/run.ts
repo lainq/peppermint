@@ -1,8 +1,8 @@
 import { readdirSync, readFile, readFileSync } from "fs";
-import { exception } from "node:console";
 import { join } from "path";
 import { cwd } from "process";
 import { PepperMintException } from "../../src/exceptions/exception";
+import { PepperMintLexer, Tokens } from "../../src/lang/lexer";
 
 export const run = (file:string) => {
     readFile(file, (error:NodeJS.ErrnoException | null, data:Buffer) => {
@@ -11,8 +11,8 @@ export const run = (file:string) => {
                 message : error.message
             }).throwException(true)
         } else {
-            // const tokens = new PepperMintLexer(data.toString())
-            console.log(data.toString())
+            const tokens:Array<Tokens<any>> = new PepperMintLexer(data.toString(), file).generateTokens()
+            console.log(tokens)
         }
     })
 }
@@ -22,7 +22,9 @@ export class PepperMintExecutor {
 
     constructor(source:string | undefined){
         this.source = source ? source : this.findProjectMain()
-        console.log(this.source)
+        if(this.source){
+            run(this.source)
+        }
     }
 
     private findProjectMain = ():string | undefined => {
