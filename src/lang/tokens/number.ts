@@ -1,10 +1,10 @@
-import { LexerPosition } from "../position";
+import {LexerPosition} from '../position';
 
 export class PepperMintNumber {
   private position: LexerPosition;
   private data: string;
 
-  private start:number
+  private start: number;
 
   /**
    * @constructor
@@ -12,11 +12,10 @@ export class PepperMintNumber {
    * data inside of the file
    */
   constructor(data: string, pos: LexerPosition) {
-    this.position = pos
-    this.data = data
+    this.position = pos;
+    this.data = data;
 
-    this.start = this.position.position
-
+    this.start = this.position.position;
   }
 
   /**
@@ -41,7 +40,7 @@ export class PepperMintNumber {
         dotCount += 1;
       }
 
-      if(character){
+      if (character) {
         numberString += character.toString();
       }
 
@@ -51,11 +50,10 @@ export class PepperMintNumber {
     return {
       number: numberString,
       position: this.position.position,
-      start : this.start,
-      dots : dotCount
+      start: this.start,
+      dots: dotCount,
     };
   };
-
 
   /**
    * @public @static

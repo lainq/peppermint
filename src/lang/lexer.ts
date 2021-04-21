@@ -1,10 +1,10 @@
-import { PepperMintException } from '../exceptions/exception';
+import {PepperMintException} from '../exceptions/exception';
 import {LexerPosition} from './position';
-import { mentionCommands, PepperMintCommand } from './tokens/command';
-import { PepperMintComment } from './tokens/comments';
-import { PepperMintNumber } from './tokens/number';
-import { PepperMintString } from './tokens/string';
-import { brackets, symbols } from './tokens/symbols';
+import {mentionCommands, PepperMintCommand} from './tokens/command';
+import {PepperMintComment} from './tokens/comments';
+import {PepperMintNumber} from './tokens/number';
+import {PepperMintString} from './tokens/string';
+import {brackets, symbols} from './tokens/symbols';
 
 interface TokenPosition {
   // the start of the token value
@@ -66,65 +66,74 @@ export class PepperMintLexer {
           type: 'SPACE',
           position: {start: this.position.position},
         });
-      } else if(character == '"'){
-        const string = new PepperMintString(this.data, this.position).createString()
-        if(string.quotation == 2){
+      } else if (character == '"') {
+        const string = new PepperMintString(
+          this.data,
+          this.position
+        ).createString();
+        if (string.quotation == 2) {
           this.tokens.push({
-            token : string.data,
-            type : 'STRING',
-            position : {
-              start : string.start,
-              end :string.pos
-            }
-          })
+            token: string.data,
+            type: 'STRING',
+            position: {
+              start: string.start,
+              end: string.pos,
+            },
+          });
         } else {
           const exception = new PepperMintException({
-            message : "String not closed",
-            file : this.filename,
-            line : this.lineNumber
-          }).throwException(true)
+            message: 'String not closed',
+            file: this.filename,
+            line: this.lineNumber,
+          }).throwException(true);
         }
-      }  else if(Number.isInteger(parseInt(character))){
+      } else if (Number.isInteger(parseInt(character))) {
         const number = new PepperMintNumber(
           this.data,
           this.position
-        ).createNumberToken()
+        ).createNumberToken();
 
-        if(number.dots > 1){
+        if (number.dots > 1) {
           const exception = new PepperMintException({
-            message : `Invalid Syntax: ${number.number}`,
-            suggestion : "Numbers can only contain two decimal points",
-            line : this.lineNumber,
-            file : this.filename
-          }).throwException(true)
+            message: `Invalid Syntax: ${number.number}`,
+            suggestion: 'Numbers can only contain two decimal points',
+            line: this.lineNumber,
+            file: this.filename,
+          }).throwException(true);
         } else {
           this.tokens.push({
-            token : number.number,
-            type : PepperMintNumber.createTokenType(number.number),
-            position : {
-              start : number.start,
-              end : number.position
-            }
-          })
+            token: number.number,
+            type: PepperMintNumber.createTokenType(number.number),
+            position: {
+              start: number.start,
+              end: number.position,
+            },
+          });
         }
-      } else if(symbols.includes(character)){
+      } else if (symbols.includes(character)) {
         this.tokens.push({
-          token : character,
-          type : "OPERATOR",
-          position : {start:this.position.position}
-        })
-      } else if(Array.from(brackets.keys()).includes(character)) {
+          token: character,
+          type: 'OPERATOR',
+          position: {start: this.position.position},
+        });
+      } else if (Array.from(brackets.keys()).includes(character)) {
         this.tokens.push({
-          token : character,
-          type : String(brackets.get(character)).toUpperCase(),
-          position : {start:this.position.position}
-        })
-      } else if(character == "#"){
-        const comment = new PepperMintComment(this.data, this.position).createComment()
-        this.position.position = comment
-      } else if(character == "@"){
-        const command = new PepperMintCommand(this.data, this.position).findCommand()
-        command.command = command.command.slice(1)
+          token: character,
+          type: String(brackets.get(character)).toUpperCase(),
+          position: {start: this.position.position},
+        });
+      } else if (character == '#') {
+        const comment = new PepperMintComment(
+          this.data,
+          this.position
+        ).createComment();
+        this.position.position = comment;
+      } else if (character == '@') {
+        const command = new PepperMintCommand(
+          this.data,
+          this.position
+        ).findCommand();
+        command.command = command.command.slice(1);
         // if(!Array.from(mentionCommands.keys()).includes(command.command)) {
         //   const exception = new PepperMintException({
         //     message : `@${command.command} is not a ready function`,
@@ -134,12 +143,12 @@ export class PepperMintLexer {
         // }
 
         this.tokens.push({
-          token : command.command,
-          type : "builtin",
-          position : {start:command.start, end:command.position}
-        })
+          token: command.command,
+          type: 'builtin',
+          position: {start: command.start, end: command.position},
+        });
 
-        this.position.position = command.position
+        this.position.position = command.position;
       }
 
       this.position.increment(1);
