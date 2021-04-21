@@ -1,7 +1,10 @@
 import { PepperMintException } from '../exceptions/exception';
 import {LexerPosition} from './position';
+import { mentionCommands, PepperMintCommand } from './tokens/command';
+import { PepperMintComment } from './tokens/comments';
 import { PepperMintNumber } from './tokens/number';
 import { PepperMintString } from './tokens/string';
+import { brackets, symbols } from './tokens/symbols';
 
 interface TokenPosition {
   // the start of the token value
@@ -104,6 +107,39 @@ export class PepperMintLexer {
             }
           })
         }
+      } else if(symbols.includes(character)){
+        this.tokens.push({
+          token : character,
+          type : "OPERATOR",
+          position : {start:this.position.position}
+        })
+      } else if(Array.from(brackets.keys()).includes(character)) {
+        this.tokens.push({
+          token : character,
+          type : String(brackets.get(character)).toUpperCase(),
+          position : {start:this.position.position}
+        })
+      } else if(character == "#"){
+        const comment = new PepperMintComment(this.data, this.position).createComment()
+        this.position.position = comment
+      } else if(character == "@"){
+        const command = new PepperMintCommand(this.data, this.position).findCommand()
+        command.command = command.command.slice(1)
+        // if(!Array.from(mentionCommands.keys()).includes(command.command)) {
+        //   const exception = new PepperMintException({
+        //     message : `@${command.command} is not a ready function`,
+        //     line : this.lineNumber,
+        //     file : this.filename
+        //   }).throwException(true)
+        // }
+
+        this.tokens.push({
+          token : command.command,
+          type : "builtin",
+          position : {start:command.start, end:command.position}
+        })
+
+        this.position.position = command.position
       }
 
       this.position.increment(1);

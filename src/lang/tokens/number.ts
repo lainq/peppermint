@@ -69,6 +69,6 @@ export class PepperMintNumber {
    * @returns {String} Integer or float
    */
   public static createTokenType = (data: string): string => {
-    return data.includes('.') ? 'float' : 'integer';
+    return String(data.includes('.') ? 'float' : 'integer').toUpperCase();
   };
 }
