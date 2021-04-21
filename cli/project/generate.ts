@@ -1,24 +1,31 @@
-import {existsSync, readdirSync, statSync} from 'fs';
+import {existsSync, mkdirSync, readdirSync, statSync, writeFile} from 'fs';
 import {join} from 'path';
 import {cwd} from 'process';
 import {PepperMintException} from '../../src/exceptions/exception';
 
-export interface ProjecConfig {
+export interface ProjectConfig {
   name?: string;
   license?: string;
   author?: string;
   path?: string;
 }
 
+export interface ProjectFiles {
+  files : Map<string, string>;
+  folders : Array<string>
+} 
+
 export class GenerateProject {
-  private config: ProjecConfig;
+  private config: ProjectConfig;
+  private files:ProjectFiles
 
   /**
    * @constructor
-   * @param {ProjecConfig} config The project configuration information
+   * @param {ProjectConfig} config The project configuration information
    */
-  constructor(config: ProjecConfig) {
+  constructor(config: ProjectConfig, files:ProjectFiles) {
     this.config = config;
+    this.files = files
 
     if (!this.config.name) {
       const exception = new PepperMintException({
@@ -29,7 +36,7 @@ export class GenerateProject {
     this.config.path = this.findProjectPath(this.config.name);
     if (this.config.path) {
      if(this.verifyProjectFolder(this.config.path)){
-       console.log("Yes")
+       this.generateProjectFiles()
      } else {
        const exception = new PepperMintException({
          message : "Folder not suitable for a project",
@@ -37,6 +44,33 @@ export class GenerateProject {
        }).throwException(true)
      }
     }
+  }
+
+  private generateProjectFiles = ():void | null => {
+    if(!this.config.path){
+      return null
+    }
+
+    mkdirSync(this.config.path)
+    this.files.folders.forEach((folder:string) => {
+      if(!this.config.path){
+        return null
+      }
+      mkdirSync(join(this.config.path, folder))
+    })
+
+    Array.from(this.files.files.keys()).forEach((key:string) => {
+      if(this.config.path){
+        const data = this.files.files.get(key) || " "
+        writeFile(join(this.config.path, key), data, (error:NodeJS.ErrnoException | null) => {
+          if(error){
+            const exception = new PepperMintException({
+              message : error.message
+            }).throwException(true)
+          }
+        })
+      }
+    })
   }
 
   /**

@@ -3,7 +3,7 @@ import {join} from 'path';
 import {table as Table} from 'table';
 import { colours, throwColoredText } from '../../modules/colors';
 
-export class LongProjectList {
+export class PepperMintProjectList {
   private readonly store: string;
 
   /**

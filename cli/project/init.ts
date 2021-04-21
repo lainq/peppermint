@@ -1,3 +1,4 @@
+import { join } from 'path';
 import {commands} from '../constants';
 import {GenerateProject} from './generate';
 import {PepperMintPrompt} from './prompt';
@@ -19,6 +20,15 @@ export class PepperMintProject {
         name: this.params.get('name'),
         author: this.params.get('author'),
         license: this.params.get('license'),
+      }, {
+        files : new Map<string, string>([
+          ["README.md", `# ${this.params.get('name')}`],
+          ["app.ppm", " "],
+          [join("tests", "test.ppm"), ""],
+        ]),
+        folders : [
+          "tests"
+        ]
       });
     }
   }
