@@ -47,6 +47,14 @@ export class GenerateProject {
     }
   }
 
+  /**
+   * @private
+   * 
+   * Generate all the directories and files
+   * based on the constructor parameters
+   * 
+   * @returns {void | null}
+   */
   private generateProjectFiles = ():void | null => {
     if(!this.config.path){
       return null

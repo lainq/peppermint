@@ -4,6 +4,10 @@ import { cwd } from "process";
 import { PepperMintException } from "../../src/exceptions/exception";
 import { PepperMintLexer, Tokens } from "../../src/lang/lexer";
 
+/**
+ * Run a peppermin source
+ * @param {string} file The file to run
+ */
 export const run = (file:string) => {
     readFile(file, (error:NodeJS.ErrnoException | null, data:Buffer) => {
         if(error) {
@@ -20,16 +24,41 @@ export const run = (file:string) => {
 export class PepperMintExecutor {
     private source:string | undefined;
 
+    /**
+     * @constructor
+     * @param {string | undefined} source The source parameter passed along
+     * with the command in the command line
+     */
     constructor(source:string | undefined){
         this.source = source ? source : this.findProjectMain()
         if(this.source){
+            // if source files exists 
+            // run the source file
             run(this.source)
         }
     }
 
+    /**
+     * @private
+     * 
+     * Check the directory for peppermint config files(.peppermint)
+     * if the file does not exist, throw an exception
+     * else, read the file and try to convert it to json
+     * 
+     * Get the entry point from the json file and
+     * return the filename
+     * 
+     * @returns {string | undefined} The path of the entry point or
+     * undefined 
+     */
     private findProjectMain = ():string | undefined => {
+        // Check if the peppermint config files exists 
+        // in the current working directory(cwd)
         const peppermint = readdirSync(cwd()).includes(".peppermint")
         if(peppermint){
+            // if the peppermint file exists
+            // read the file and try to convert
+            // it into json data
             const data:Buffer = readFileSync(join(cwd(), ".peppermint"))
             try {
                 const config = JSON.parse(data.toString())
@@ -41,6 +70,8 @@ export class PepperMintExecutor {
                     return undefined
                 }
 
+                // return the entry point field from the
+                // json data
                 return String(config.main)
             } catch(exception){
                 console.log(exception)
