@@ -24,5 +24,5 @@ export const performCommand = (
     const project: PepperMintProject = new PepperMintProject(params);
   } else if(command == "list"){
     const list: PepperMintProjectList = new PepperMintProjectList()
-  }
+  } else if
 };
