@@ -11,5 +11,3 @@ import {PepperMintCli} from '../cli/cli';
 // are considered to be the flags
 // Example : <executable> run --flag-1=flag-value --flag-2=value
 const args: PepperMintCli = new PepperMintCli(process.argv.slice(2));
-
-

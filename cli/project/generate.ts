@@ -2,7 +2,7 @@ import {existsSync, mkdirSync, readdirSync, statSync, writeFile} from 'fs';
 import {join} from 'path';
 import {cwd} from 'process';
 import {PepperMintException} from '../../src/exceptions/exception';
-import { PepperMintProjectStore } from './store';
+import {PepperMintProjectStore} from './store';
 
 export interface ProjectConfig {
   name?: string;
@@ -12,21 +12,21 @@ export interface ProjectConfig {
 }
 
 export interface ProjectFiles {
-  files : Map<string, string>;
-  folders : Array<string>
-} 
+  files: Map<string, string>;
+  folders: Array<string>;
+}
 
 export class GenerateProject {
   private config: ProjectConfig;
-  private files:ProjectFiles
+  private files: ProjectFiles;
 
   /**
    * @constructor
    * @param {ProjectConfig} config The project configuration information
    */
-  constructor(config: ProjectConfig, files:ProjectFiles) {
+  constructor(config: ProjectConfig, files: ProjectFiles) {
     this.config = config;
-    this.files = files
+    this.files = files;
 
     if (!this.config.name) {
       const exception = new PepperMintException({
@@ -36,69 +36,77 @@ export class GenerateProject {
 
     this.config.path = this.findProjectPath(this.config.name);
     if (this.config.path) {
-     if(this.verifyProjectFolder(this.config.path)){
-       this.generateProjectFiles()
-     } else {
-       const exception = new PepperMintException({
-         message : "Folder not suitable for a project",
-         suggestion : "Try again with a different project name"
-       }).throwException(true)
-     }
+      if (this.verifyProjectFolder(this.config.path)) {
+        this.generateProjectFiles();
+      } else {
+        const exception = new PepperMintException({
+          message: 'Folder not suitable for a project',
+          suggestion: 'Try again with a different project name',
+        }).throwException(true);
+      }
     }
   }
 
   /**
    * @private
-   * 
+   *
    * Generate all the directories and files
    * based on the constructor parameters
-   * 
+   *
    * @returns {void | null}
    */
-  private generateProjectFiles = ():void | null => {
-    if(!this.config.path){
-      return null
+  private generateProjectFiles = (): void | null => {
+    if (!this.config.path) {
+      return null;
     }
 
-    mkdirSync(this.config.path)
-    this.files.folders.forEach((folder:string) => {
-      if(!this.config.path){
-        return null
+    mkdirSync(this.config.path);
+    this.files.folders.forEach((folder: string) => {
+      if (!this.config.path) {
+        return null;
       }
-      mkdirSync(join(this.config.path, folder))
-    })
+      mkdirSync(join(this.config.path, folder));
+    });
 
-    this.files.files.set(`.peppermint`, this.generateConfigFiles(this.config))
-    Array.from(this.files.files.keys()).forEach((key:string) => {
-      if(this.config.path){
-        const data = this.files.files.get(key) || " "
-        writeFile(join(this.config.path, key), data, (error:NodeJS.ErrnoException | null) => {
-          if(error){
-            const exception = new PepperMintException({
-              message : error.message
-            }).throwException(true)
+    this.files.files.set(`.peppermint`, this.generateConfigFiles(this.config));
+    Array.from(this.files.files.keys()).forEach((key: string) => {
+      if (this.config.path) {
+        const data = this.files.files.get(key) || ' ';
+        writeFile(
+          join(this.config.path, key),
+          data,
+          (error: NodeJS.ErrnoException | null) => {
+            if (error) {
+              const exception = new PepperMintException({
+                message: error.message,
+              }).throwException(true);
+            }
           }
-        })
+        );
       }
-    })
+    });
 
-    if(this.config.name && this.config.path){
+    if (this.config.name && this.config.path) {
       const store = new PepperMintProjectStore(
         this.config.name,
         this.config.path
-      ).storeProjectInformation()
+      ).storeProjectInformation();
     }
-  }
+  };
 
-  private generateConfigFiles = (data:ProjectConfig):string => {
-    return JSON.stringify({
-      name : data.name,
-      path : data.path,
-      author : data.author || "",
-      license : data.license || "",
-      main : data.path ? join(data.path, "app.ppm") : ""
-    }, undefined, 4)
-  }
+  private generateConfigFiles = (data: ProjectConfig): string => {
+    return JSON.stringify(
+      {
+        name: data.name,
+        path: data.path,
+        author: data.author || '',
+        license: data.license || '',
+        main: data.path ? join(data.path, 'app.ppm') : '',
+      },
+      undefined,
+      4
+    );
+  };
 
   /**
    * @private

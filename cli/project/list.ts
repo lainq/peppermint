@@ -1,7 +1,7 @@
 import {readFileSync, existsSync, writeFileSync} from 'fs';
 import {join} from 'path';
 import {table as Table} from 'table';
-import { colours, throwColoredText } from '../../modules/colors';
+import {colours, throwColoredText} from '../../modules/colors';
 
 export class PepperMintProjectList {
   private readonly store: string;
@@ -16,7 +16,12 @@ export class PepperMintProjectList {
     // Check if the store exists, if not
     // no projects are created or saved
     if (!storeExists) {
-      console.log(throwColoredText(colours.fg.yellow ,"It seems like you haven't created any project"));
+      console.log(
+        throwColoredText(
+          colours.fg.yellow,
+          "It seems like you haven't created any project"
+        )
+      );
       process.exit();
     }
 
@@ -55,7 +60,7 @@ export class PepperMintProjectList {
         currentProject.path
       )
         ? throwColoredText(colours.fg.green, currentProject.path)
-        : throwColoredText(colours.fg.red ,currentProject.path);
+        : throwColoredText(colours.fg.red, currentProject.path);
       outputArray[projectIndex][2] = currentProject.created;
     }
 
