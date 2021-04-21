@@ -1,5 +1,6 @@
 import { PepperMintException } from '../exceptions/exception';
 import {LexerPosition} from './position';
+import { PepperMintNumber } from './tokens/number';
 import { PepperMintString } from './tokens/string';
 
 interface TokenPosition {
@@ -80,7 +81,30 @@ export class PepperMintLexer {
             line : this.lineNumber
           }).throwException(true)
         }
-      } 
+      }  else if(Number.isInteger(parseInt(character))){
+        const number = new PepperMintNumber(
+          this.data,
+          this.position
+        ).createNumberToken()
+
+        if(number.dots > 1){
+          const exception = new PepperMintException({
+            message : `Invalid Syntax: ${number.number}`,
+            suggestion : "Numbers can only contain two decimal points",
+            line : this.lineNumber,
+            file : this.filename
+          }).throwException(true)
+        } else {
+          this.tokens.push({
+            token : number.number,
+            type : PepperMintNumber.createTokenType(number.number),
+            position : {
+              start : number.start,
+              end : number.position
+            }
+          })
+        }
+      }
 
       this.position.increment(1);
       character = this.position.curentCharacter(this.data);
