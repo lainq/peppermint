@@ -28,7 +28,14 @@ export class GenerateProject {
 
     this.config.path = this.findProjectPath(this.config.name);
     if (this.config.path) {
-      console.log(this.verifyProjectFolder(this.config.path));
+     if(this.verifyProjectFolder(this.config.path)){
+       console.log("Yes")
+     } else {
+       const exception = new PepperMintException({
+         message : "Folder not suitable for a project",
+         suggestion : "Try again with a different project name"
+       }).throwException(true)
+     }
     }
   }
 
