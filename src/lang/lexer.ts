@@ -1,4 +1,6 @@
+import { PepperMintException } from '../exceptions/exception';
 import {LexerPosition} from './position';
+import { PepperMintString } from './tokens/string';
 
 interface TokenPosition {
   // the start of the token value
@@ -60,7 +62,25 @@ export class PepperMintLexer {
           type: 'SPACE',
           position: {start: this.position.position},
         });
-      }
+      } else if(character == '"'){
+        const string = new PepperMintString(this.data, this.position).createString()
+        if(string.quotation == 2){
+          this.tokens.push({
+            token : string.data,
+            type : 'STRING',
+            position : {
+              start : string.start,
+              end :string.pos
+            }
+          })
+        } else {
+          const exception = new PepperMintException({
+            message : "String not closed",
+            file : this.filename,
+            line : this.lineNumber
+          }).throwException(true)
+        }
+      } 
 
       this.position.increment(1);
       character = this.position.curentCharacter(this.data);
