@@ -1,5 +1,6 @@
 import {PepperMintProject} from './project/init';
 import { PepperMintProjectList } from './project/list';
+import { PepperMintExecutor } from './run/run';
 
 // the list of all the cli commands
 // along with the list of flags associated
@@ -9,7 +10,8 @@ export const commands: Map<string, Array<string>> = new Map<
   Array<string>
 >([
   ['init', ['name', 'license', 'author']],
-  ["list", []]
+  ["list", []],
+  ["run", ["file"]]
 ]);
 
 /**
@@ -24,5 +26,7 @@ export const performCommand = (
     const project: PepperMintProject = new PepperMintProject(params);
   } else if(command == "list"){
     const list: PepperMintProjectList = new PepperMintProjectList()
-  } else if
+  } else if(command == "run"){
+    const run:PepperMintExecutor = new PepperMintExecutor(params.get("file"))
+  }
 };

@@ -1,7 +1,4 @@
-import { readFile } from 'fs';
 import {PepperMintCli} from '../cli/cli';
-import { PepperMintException } from './exceptions/exception';
-import { PepperMintLexer } from './lang/lexer';
 
 // initialize the peppermint cli arg parser
 // to parse the command line arguments passed
@@ -16,14 +13,3 @@ import { PepperMintLexer } from './lang/lexer';
 const args: PepperMintCli = new PepperMintCli(process.argv.slice(2));
 
 
-export const run = (file:string) => {
-    readFile(file, (error:NodeJS.ErrnoException | null, data:Buffer) => {
-        if(error) {
-            const exception = new PepperMintException({
-                message : error.message
-            }).throwException(true)
-        } else {
-            const tokens = new PepperMintLexer(data.toString())
-        }
-    })
-}
