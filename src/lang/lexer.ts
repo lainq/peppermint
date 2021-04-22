@@ -134,13 +134,6 @@ export class PepperMintLexer {
           this.position
         ).findCommand();
         command.command = command.command.slice(1);
-        // if(!Array.from(mentionCommands.keys()).includes(command.command)) {
-        //   const exception = new PepperMintException({
-        //     message : `@${command.command} is not a ready function`,
-        //     line : this.lineNumber,
-        //     file : this.filename
-        //   }).throwException(true)
-        // }
 
         this.tokens.push({
           token: command.command,
@@ -149,7 +142,7 @@ export class PepperMintLexer {
         });
 
         this.position.position = command.position;
-      }
+      } 
 
       this.position.increment(1);
       character = this.position.curentCharacter(this.data);

@@ -2,6 +2,9 @@
 # hello world #
 5 + 9
 
+# bultin command #
 @exit
+
+55
 
 4 + 8
