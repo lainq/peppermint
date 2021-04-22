@@ -1,5 +1,9 @@
 import {PepperMintCli} from '../cli/cli';
 
+export const keywords:Array<string> = [
+    "let"
+]
+
 // initialize the peppermint cli arg parser
 // to parse the command line arguments passed
 // in along with the application

@@ -1,3 +1,4 @@
+import { TokenPosition } from "../lexer"
 import { LexerPosition } from "../position"
 
 export const upper = [...Array(26)].map((_, y) => String.fromCharCode(y+65))
@@ -9,6 +10,12 @@ const numbers = Array.from(Array(10).keys()).map((number) => {
     return String(number)
 })
 export const LETTERS_DIGITS = Array.prototype.concat(alpha, numbers, ["_"])
+
+export interface Identifier {
+    identifierName : string
+    isKeyword? : boolean
+    position : TokenPosition
+}
 
 export class PepperMintIdentifier {
     private data:string
@@ -22,7 +29,7 @@ export class PepperMintIdentifier {
         this.start = this.position.position
     }
 
-    public findIdentifier = ():any => {
+    public findIdentifier = ():Identifier => {
         let character:string | null = this.position.curentCharacter(this.data)
         let identifier = ""
 
@@ -33,6 +40,9 @@ export class PepperMintIdentifier {
             character = this.position.curentCharacter(this.data)
         }
 
-        console.log(identifier)
+        return {
+            identifierName : identifier,
+            position : {start:this.start, end:this.position.position}
+        }
     } 
 }

@@ -1,13 +1,14 @@
+import { keywords } from '../index';
 import {PepperMintException} from '../exceptions/exception';
 import {LexerPosition} from './position';
 import {mentionCommands, PepperMintCommand} from './tokens/command';
 import {PepperMintComment} from './tokens/comments';
-import { alpha, LETTERS_DIGITS, PepperMintIdentifier } from './tokens/indentifiers';
+import { alpha, Identifier, LETTERS_DIGITS, PepperMintIdentifier } from './tokens/indentifiers';
 import {PepperMintNumber} from './tokens/number';
 import {PepperMintString} from './tokens/string';
 import {brackets, symbols} from './tokens/symbols';
 
-interface TokenPosition {
+export interface TokenPosition {
   // the start of the token value
   start: number;
 
@@ -23,6 +24,7 @@ export interface Tokens<TokenType> {
   // the position of the token
   // -start, -end?
   position: TokenPosition;
+  identifier? : Identifier
 }
 
 export class PepperMintLexer {
@@ -145,6 +147,14 @@ export class PepperMintLexer {
         this.position.position = command.position;
       } else if(LETTERS_DIGITS.includes(character)){
         const identifier = new PepperMintIdentifier(this.data, this.position).findIdentifier()
+        identifier.isKeyword = keywords.includes(identifier.identifierName)
+
+        this.tokens.push({
+          token : identifier.identifierName,
+          type : identifier.isKeyword ? "KEYWORD" : "IDENTIFIER",
+          position : identifier.position,
+          identifier :identifier
+        })
       }
 
       this.position.increment(1);
