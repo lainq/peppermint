@@ -1,9 +1,14 @@
-import { keywords } from '../index';
+import {keywords} from '../index';
 import {PepperMintException} from '../exceptions/exception';
 import {LexerPosition} from './position';
 import {mentionCommands, PepperMintCommand} from './tokens/command';
 import {PepperMintComment} from './tokens/comments';
-import { alpha, Identifier, LETTERS_DIGITS, PepperMintIdentifier } from './tokens/indentifiers';
+import {
+  alpha,
+  Identifier,
+  LETTERS_DIGITS,
+  PepperMintIdentifier,
+} from './tokens/indentifiers';
 import {PepperMintNumber} from './tokens/number';
 import {PepperMintString} from './tokens/string';
 import {brackets, symbols} from './tokens/symbols';
@@ -24,7 +29,7 @@ export interface Tokens<TokenType> {
   // the position of the token
   // -start, -end?
   position: TokenPosition;
-  identifier? : Identifier
+  identifier?: Identifier;
 }
 
 export class PepperMintLexer {
@@ -145,27 +150,30 @@ export class PepperMintLexer {
         });
 
         this.position.position = command.position;
-      } else if(LETTERS_DIGITS.includes(character)){
-        const identifier = new PepperMintIdentifier(this.data, this.position).findIdentifier()
-        identifier.isKeyword = keywords.includes(identifier.identifierName)
+      } else if (LETTERS_DIGITS.includes(character)) {
+        const identifier = new PepperMintIdentifier(
+          this.data,
+          this.position
+        ).findIdentifier();
+        identifier.isKeyword = keywords.includes(identifier.identifierName);
 
         this.tokens.push({
-          token : identifier.identifierName,
-          type : identifier.isKeyword ? "KEYWORD" : "IDENTIFIER",
-          position : identifier.position,
-          identifier :identifier
-        })
-      } else if(["!", ">", "<"].includes(character)){
-        const relation = this.createRelationalOperators(character)
-        if(relation){
+          token: identifier.identifierName,
+          type: identifier.isKeyword ? 'KEYWORD' : 'IDENTIFIER',
+          position: identifier.position,
+          identifier: identifier,
+        });
+      } else if (['!', '>', '<'].includes(character)) {
+        const relation = this.createRelationalOperators(character);
+        if (relation) {
           this.tokens.push({
-            token : relation,
-            type : "RELATIONAL",
-            position : {
-              start : (this.position.position - relation.length)+1,
-              end : this.position.position
-            }
-          })
+            token: relation,
+            type: 'RELATIONAL',
+            position: {
+              start: this.position.position - relation.length + 1,
+              end: this.position.position,
+            },
+          });
         }
       }
 
@@ -176,31 +184,33 @@ export class PepperMintLexer {
     return this.tokens;
   };
 
-  private createRelationalOperators = (character:string | null):string | null => {
-    if(!character){
-      return null
+  private createRelationalOperators = (
+    character: string | null
+  ): string | null => {
+    if (!character) {
+      return null;
     }
     const relational = new Map<string, string>([
-      [">=", "GREATER_EQUALS"],
-      ["<=", "LESS_EQUALS"],
-      ["==", "EQUALS"],
-      ["!=", "NOT_EQUALS"],
-      [">", "GREATER"],
-      ["<", "LESS"]
-    ])
-    this.position.increment(1)
-    const next = this.position.curentCharacter(this.data)
-    if(next){
-      character += next
-      if(!Array.from(relational.keys()).includes(character)){
-        this.position.decrement(1)
-        return null
+      ['>=', 'GREATER_EQUALS'],
+      ['<=', 'LESS_EQUALS'],
+      ['==', 'EQUALS'],
+      ['!=', 'NOT_EQUALS'],
+      ['>', 'GREATER'],
+      ['<', 'LESS'],
+    ]);
+    this.position.increment(1);
+    const next = this.position.curentCharacter(this.data);
+    if (next) {
+      character += next;
+      if (!Array.from(relational.keys()).includes(character)) {
+        this.position.decrement(1);
+        return null;
       }
 
-      return character
+      return character;
     } else {
-      this.position.decrement(1)
-      return null
+      this.position.decrement(1);
+      return null;
     }
-  }
+  };
 }
