@@ -155,6 +155,18 @@ export class PepperMintLexer {
           position : identifier.position,
           identifier :identifier
         })
+      } else if(["!", ">", "<"].includes(character)){
+        const relation = this.createRelationalOperators(character)
+        if(relation){
+          this.tokens.push({
+            token : relation,
+            type : "RELATIONAL",
+            position : {
+              start : (this.position.position - relation.length)+1,
+              end : this.position.position
+            }
+          })
+        }
       }
 
       this.position.increment(1);
@@ -163,4 +175,32 @@ export class PepperMintLexer {
 
     return this.tokens;
   };
+
+  private createRelationalOperators = (character:string | null):string | null => {
+    if(!character){
+      return null
+    }
+    const relational = new Map<string, string>([
+      [">=", "GREATER_EQUALS"],
+      ["<=", "LESS_EQUALS"],
+      ["==", "EQUALS"],
+      ["!=", "NOT_EQUALS"],
+      [">", "GREATER"],
+      ["<", "LESS"]
+    ])
+    this.position.increment(1)
+    const next = this.position.curentCharacter(this.data)
+    if(next){
+      character += next
+      if(!Array.from(relational.keys()).includes(character)){
+        this.position.decrement(1)
+        return null
+      }
+
+      return character
+    } else {
+      this.position.decrement(1)
+      return null
+    }
+  }
 }

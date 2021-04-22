@@ -7,4 +7,5 @@
 
 55
 
-let hello = 4 + 8
+let hello = 4 >= 5
+let data = 9 != 9
