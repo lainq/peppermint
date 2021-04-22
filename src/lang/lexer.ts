@@ -2,6 +2,7 @@ import {PepperMintException} from '../exceptions/exception';
 import {LexerPosition} from './position';
 import {mentionCommands, PepperMintCommand} from './tokens/command';
 import {PepperMintComment} from './tokens/comments';
+import { alpha, LETTERS_DIGITS, PepperMintIdentifier } from './tokens/indentifiers';
 import {PepperMintNumber} from './tokens/number';
 import {PepperMintString} from './tokens/string';
 import {brackets, symbols} from './tokens/symbols';
@@ -142,7 +143,9 @@ export class PepperMintLexer {
         });
 
         this.position.position = command.position;
-      } 
+      } else if(LETTERS_DIGITS.includes(character)){
+        const identifier = new PepperMintIdentifier(this.data, this.position).findIdentifier()
+      }
 
       this.position.increment(1);
       character = this.position.curentCharacter(this.data);

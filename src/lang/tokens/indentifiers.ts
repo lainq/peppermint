@@ -1,5 +1,15 @@
 import { LexerPosition } from "../position"
 
+export const upper = [...Array(26)].map((_, y) => String.fromCharCode(y+65))
+export const lower = upper.map((value:string) => {
+    return value.toLowerCase()
+})
+export const alpha = Array.prototype.concat(upper, lower)
+const numbers = Array.from(Array(10).keys()).map((number) => {
+    return String(number)
+})
+export const LETTERS_DIGITS = Array.prototype.concat(alpha, numbers, ["_"])
+
 export class PepperMintIdentifier {
     private data:string
     private position:LexerPosition
@@ -12,7 +22,17 @@ export class PepperMintIdentifier {
         this.start = this.position.position
     }
 
-    public findIdentifier = () => {
-        
+    public findIdentifier = ():any => {
+        let character:string | null = this.position.curentCharacter(this.data)
+        let identifier = ""
+
+        while(character != null && LETTERS_DIGITS.includes(character)){
+            identifier += character
+
+            this.position.increment(1)
+            character = this.position.curentCharacter(this.data)
+        }
+
+        console.log(identifier)
     } 
 }
