@@ -28,7 +28,7 @@ export class PepperMintNumber {
    * @returns An object with the line data and the new position
    */
   public createNumberToken = () => {
-    let character = this.position.curentCharacter(this.data);
+    let character = this.position.currentCharacter(this.data);
     let numberString = '';
     let dotCount = 0;
 
@@ -45,7 +45,7 @@ export class PepperMintNumber {
       }
 
       this.position.increment(1);
-      character = this.position.curentCharacter(this.data);
+      character = this.position.currentCharacter(this.data);
     }
     return {
       number: numberString,

@@ -10,7 +10,7 @@ export class PepperMintComment {
   }
 
   public createComment = (): number => {
-    let character = this.position.curentCharacter(this.data);
+    let character = this.position.currentCharacter(this.data);
     let hashes = 0;
     while (character != null) {
       if (character == '#') {
@@ -22,7 +22,7 @@ export class PepperMintComment {
       }
 
       this.position.increment(1);
-      character = this.position.curentCharacter(this.data);
+      character = this.position.currentCharacter(this.data);
     }
 
     return this.position.position;

@@ -59,7 +59,7 @@ export class PepperMintLexer {
    * @returns {Array<Tokens<any>>} The array of tokens
    * */
   public generateTokens = (): Array<Tokens<any>> => {
-    let character: string | null = this.position.curentCharacter(this.data);
+    let character: string | null = this.position.currentCharacter(this.data);
     while (character != null) {
       if (character == '\n') {
         this.tokens.push({
@@ -178,7 +178,7 @@ export class PepperMintLexer {
       }
 
       this.position.increment(1);
-      character = this.position.curentCharacter(this.data);
+      character = this.position.currentCharacter(this.data);
     }
 
     return this.tokens;
@@ -199,7 +199,7 @@ export class PepperMintLexer {
       ['<', 'LESS'],
     ]);
     this.position.increment(1);
-    const next = this.position.curentCharacter(this.data);
+    const next = this.position.currentCharacter(this.data);
     if (next) {
       character += next;
       if (!Array.from(relational.keys()).includes(character)) {

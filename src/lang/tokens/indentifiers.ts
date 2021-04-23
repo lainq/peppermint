@@ -30,14 +30,14 @@ export class PepperMintIdentifier {
   }
 
   public findIdentifier = (): Identifier => {
-    let character: string | null = this.position.curentCharacter(this.data);
+    let character: string | null = this.position.currentCharacter(this.data);
     let identifier = '';
 
     while (character != null && LETTERS_DIGITS.includes(character)) {
       identifier += character;
 
       this.position.increment(1);
-      character = this.position.curentCharacter(this.data);
+      character = this.position.currentCharacter(this.data);
     }
 
     return {

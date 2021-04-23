@@ -44,7 +44,7 @@ export class LexerPosition {
    * @param {string} data The data string
    * @returns {string | null} The current character or null
    */
-  public curentCharacter = (data: string | Array<any>): string | null => {
+  public currentCharacter = (data: string | Array<any>): any => {
     if (data.length == this.position) {
       return null;
     } else {

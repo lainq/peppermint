@@ -27,7 +27,7 @@ export class PepperMintString {
    * tokenising
    */
   public createString = (): any => {
-    let character: string | null = this.pos.curentCharacter(this.data);
+    let character: string | null = this.pos.currentCharacter(this.data);
     let string: string = '';
     let quotationCount = 0;
 
@@ -44,7 +44,7 @@ export class PepperMintString {
 
       string += character.toString();
       this.pos.increment(1);
-      character = this.pos.curentCharacter(this.data);
+      character = this.pos.currentCharacter(this.data);
     }
 
     return {
