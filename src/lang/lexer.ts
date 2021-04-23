@@ -69,11 +69,11 @@ export class PepperMintLexer {
         });
         this.lineNumber += 1;
       } else if (character == ' ') {
-        this.tokens.push({
-          token: character,
-          type: 'SPACE',
-          position: {start: this.position.position},
-        });
+        // this.tokens.push({
+        //   token: character,
+        //   type: 'SPACE',
+        //   position: {start: this.position.position},
+        // });
       } else if (character == '"') {
         const string = new PepperMintString(
           this.data,

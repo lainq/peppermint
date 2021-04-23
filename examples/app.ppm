@@ -1,11 +1,1 @@
-4 + 7
-# hello world #
-5 + 9
-
-# bultin command #
-@exit
-
-55
-
-let hello = 4 >= 5
-let data = 9 != 9
+let test = 6
