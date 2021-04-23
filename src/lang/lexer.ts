@@ -175,6 +175,18 @@ export class PepperMintLexer {
             },
           });
         }
+      } else if (character == ':') {
+        const constant: boolean = this.createConstantKeyword(character);
+        if (constant) {
+          this.tokens.push({
+            token: ':=',
+            type: 'CONSTANT',
+            position: {
+              start: this.position.position - 1,
+              end: this.position.position,
+            },
+          });
+        }
       }
 
       this.position.increment(1);
@@ -182,6 +194,17 @@ export class PepperMintLexer {
     }
 
     return this.tokens;
+  };
+
+  private createConstantKeyword = (character: string | null) => {
+    this.position.increment(1);
+    const next = this.position.currentCharacter(this.data);
+    if (next == '=') {
+      return true;
+    }
+
+    this.position.decrement(1);
+    return false;
   };
 
   private createRelationalOperators = (

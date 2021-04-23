@@ -20,7 +20,7 @@ export const run = (file: string) => {
         data.toString(),
         file
       ).generateTokens();
-      // console.log(tokens);
+      console.log(tokens);
       const parser = new PepperMintParser(tokens).parse();
       console.log(parser);
     }
