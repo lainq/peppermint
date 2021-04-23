@@ -1,3 +1,6 @@
+import { platform } from 'os';
+import { throwColoredText, colours } from '../modules/colors';
+import { PEPPERMINT_VERSION } from '../src/index';
 import {PepperMintProject} from './project/init';
 import {PepperMintProjectList} from './project/list';
 import {PepperMintExecutor} from './run/run';
@@ -12,6 +15,7 @@ export const commands: Map<string, Array<string>> = new Map<
   ['init', ['name', 'license', 'author']],
   ['list', []],
   ['run', ['file']],
+  ["version" , []]
 ]);
 
 /**
@@ -28,5 +32,10 @@ export const performCommand = (
     const list: PepperMintProjectList = new PepperMintProjectList();
   } else if (command == 'run') {
     const run: PepperMintExecutor = new PepperMintExecutor(params.get('file'));
+  } else if(command == "version"){
+    console.log(throwColoredText(
+      colours.fg.yellow,
+      `Peppermint Version ${PEPPERMINT_VERSION}[${platform()}]`
+    ))
   }
 };

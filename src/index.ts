@@ -1,5 +1,6 @@
 import {PepperMintCli} from '../cli/cli';
 
+export const PEPPERMINT_VERSION = "0.0.1"
 export const keywords: Array<string> = ['let'];
 
 // initialize the peppermint cli arg parser
