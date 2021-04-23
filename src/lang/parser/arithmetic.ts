@@ -17,13 +17,21 @@ export class ArithmeticOperations {
     const next = this.nodes.get('next');
 
     if (!prev?.identifier) {
-      evaluateString += prev?.token;
+      if (prev?.type == 'STRING') {
+        evaluateString += `"${prev?.token}"`;
+      } else {
+        evaluateString += prev?.token;
+      }
     }
 
     evaluateString += this.operation.token;
 
     if (!next?.identifier) {
-      evaluateString += next?.token;
+      if (next?.type == 'STRING') {
+        evaluateString += `"${next?.token}"`;
+      } else {
+        evaluateString += next?.token;
+      }
     }
 
     let result: ParserResult = {token: []};
