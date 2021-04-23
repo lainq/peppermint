@@ -22,6 +22,7 @@ export const run = (file: string) => {
       ).generateTokens();
       // console.log(tokens);
       const parser = new PepperMintParser(tokens).parse()
+      console.log(parser)
     }
   });
 };

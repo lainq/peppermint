@@ -1,4 +1,6 @@
+import { PepperMintException } from "../../exceptions/exception";
 import { Tokens } from "../lexer";
+import { ParserResult } from "./result";
 
 export class ArithmeticOperations {
     private nodes:Map<string, Tokens<any>>
@@ -9,7 +11,7 @@ export class ArithmeticOperations {
         this.operation = operation
     }
 
-    public createResult = ():any => {
+    public createResult = ():ParserResult => {
         let evaluateString:string = ""
         const prev = this.nodes.get("prev")
         const next = this.nodes.get("next")
@@ -24,13 +26,16 @@ export class ArithmeticOperations {
             evaluateString += next?.token
         }
 
+        let result:ParserResult = {token:[]}
+
         try {
-            const result = eval(evaluateString)
-            console.log(result)
+            const evalResult = eval(evaluateString)
+            result.result = evalResult
+            result.token = [result.result]
         } catch(mathException:any){
-            console.log(mathException.stack)
+            result.error = mathException.message
         }
     
-        return evaluateString
+        return result
     }
 }
