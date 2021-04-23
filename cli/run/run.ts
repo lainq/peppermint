@@ -3,7 +3,7 @@ import {join} from 'path';
 import {cwd} from 'process';
 import {PepperMintException} from '../../src/exceptions/exception';
 import {PepperMintLexer, Tokens} from '../../src/lang/lexer';
-import { PepperMintParser } from '../../src/lang/parser/parser';
+import {PepperMintParser} from '../../src/lang/parser/parser';
 
 /**
  * Run a peppermin source
@@ -21,8 +21,8 @@ export const run = (file: string) => {
         file
       ).generateTokens();
       // console.log(tokens);
-      const parser = new PepperMintParser(tokens).parse()
-      console.log(parser)
+      const parser = new PepperMintParser(tokens).parse();
+      console.log(parser);
     }
   });
 };
