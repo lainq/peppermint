@@ -43,6 +43,11 @@ export class PepperMintCli {
     while (current != null) {
       if(cliEnabled){
         cli.push(current)
+        
+        this.position += 1
+        current = this.currentArgument()
+
+        continue
       }
       if (!current.startsWith('--')) {
         const exception = new PepperMintException({
@@ -52,6 +57,11 @@ export class PepperMintCli {
       }
 
       if(this.command == "run" && current == "--args"){
+        cliEnabled = true
+
+        this.position += 1
+        current = this.currentArgument()
+
         continue
       }
 
@@ -68,7 +78,8 @@ export class PepperMintCli {
       this.position += 1;
       current = this.currentArgument();
     }
-    this.validateParameters(this.command, commandParams);
+
+    this.validateParameters(this.command, commandParams, cli);
   };
 
   /**
@@ -83,7 +94,8 @@ export class PepperMintCli {
    */
   private validateParameters = (
     command: string,
-    params: Map<string, string>
+    params: Map<string, string>,
+    cli:Array<string>
   ): void | null => {
     if (!Array.from(commands.keys()).includes(command)) {
       const exception = new PepperMintException({
@@ -106,7 +118,7 @@ export class PepperMintCli {
         }
       }
 
-      performCommand(command, params);
+      performCommand(command, params, cli);
     } else {
       process.exit();
     }

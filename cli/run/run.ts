@@ -9,7 +9,7 @@ import {PepperMintParser} from '../../src/lang/parser/parser';
  * Run a peppermin source
  * @param {string} file The file to run
  */
-export const run = (file: string) => {
+export const run = (file: string, cli:Array<string>) => {
   readFile(file, (error: NodeJS.ErrnoException | null, data: Buffer) => {
     if (error) {
       const exception = new PepperMintException({
@@ -21,7 +21,7 @@ export const run = (file: string) => {
         file
       ).generateTokens();
       console.log(tokens);
-      const parser = new PepperMintParser(tokens).parse();
+      const parser = new PepperMintParser(tokens, cli).parse();
       console.log(parser);
     }
   });
@@ -35,12 +35,12 @@ export class PepperMintExecutor {
    * @param {string | undefined} source The source parameter passed along
    * with the command in the command line
    */
-  constructor(source: string | undefined) {
+  constructor(source: string | undefined, cli:Array<string>) {
     this.source = source ? source : this.findProjectMain();
     if (this.source) {
       // if source files exists
       // run the source file
-      run(this.source);
+      run(this.source, cli);
     }
   }
 

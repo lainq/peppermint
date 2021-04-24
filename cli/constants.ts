@@ -24,14 +24,15 @@ export const commands: Map<string, Array<string>> = new Map<
  */
 export const performCommand = (
   command: string,
-  params: Map<string, string>
+  params: Map<string, string>,
+  cli:Array<string>
 ) => {
   if (command == 'init') {
     const project: PepperMintProject = new PepperMintProject(params);
   } else if (command == 'list') {
     const list: PepperMintProjectList = new PepperMintProjectList();
   } else if (command == 'run') {
-    const run: PepperMintExecutor = new PepperMintExecutor(params.get('file'));
+    const run: PepperMintExecutor = new PepperMintExecutor(params.get('file'), cli);
   } else if(command == "version"){
     console.log(throwColoredText(
       colours.fg.yellow,

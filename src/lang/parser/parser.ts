@@ -12,13 +12,15 @@ export class PepperMintParser {
 
   private currentToken: Tokens<any>;
   private lineNumber: number = 1;
+  private cli:Array<string>
 
   /**
    * @constructor
    * @param tokens The array of tokens tokenised
    * by peppermint lexer
    */
-  constructor(tokens: Array<Tokens<any>>) {
+  constructor(tokens: Array<Tokens<any>>, cli:Array<string>) {
+    this.cli = cli
     this.tokens = tokens;
     this.currentToken = this.position.currentCharacter(this.tokens);
   }
@@ -31,6 +33,7 @@ export class PepperMintParser {
    * @returns The parser results
    */
   public parse = (): Array<Tokens<any>> => {
+    console.log(this.cli)
     while (this.currentToken != null) {
       if (this.currentToken.type == 'OPERATOR') {
         const nodes: Map<
