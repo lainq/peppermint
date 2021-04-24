@@ -60,6 +60,8 @@ export class PepperMintParser {
       } else if (this.currentToken.type == 'NEWLINE') {
         this.parserTokens.push(this.currentToken);
         this.lineNumber += 1;
+      } else if(this.currentToken.type == "builtin"){
+        this.executeBuiltins(this.currentToken)
       }
 
       this.position.increment(1);
@@ -80,4 +82,19 @@ export class PepperMintParser {
       ['next', next],
     ]);
   };
+
+  private executeBuiltins = (functionName:Tokens<any>):void => {
+    const func = String(functionName.token).split(":")
+    if(func[0] == "exit"){
+      // process.exit()
+    } else if(func[0] == "env"){
+      const key = func[1]
+      let element:NodeJS.ProcessEnv | string | undefined = process.env
+      if(key){
+        element = process.env[key]
+      }
+      element = element ? element :"None"
+      console.log(element)
+    }
+  }
 }
