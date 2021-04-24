@@ -36,14 +36,23 @@ export class PepperMintCli {
    * the flags and values
    */
   public parseCommandArguments = (): void | null => {
+    let cli = []
+    let cliEnabled = false;
     let current: string | null = this.currentArgument();
     let commandParams: Map<string, string> = new Map<string, string>();
     while (current != null) {
+      if(cliEnabled){
+        cli.push(current)
+      }
       if (!current.startsWith('--')) {
         const exception = new PepperMintException({
           message: `Invalid flag - ${current} ❎`,
           suggestion: 'User -- in the beginning of the option',
         }).throwException(true);
+      }
+
+      if(this.command == "run" && current == "--args"){
+        continue
       }
 
       const commandArguments = current.split('=');
