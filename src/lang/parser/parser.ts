@@ -1,6 +1,6 @@
 import {PepperMintException} from '../../exceptions/exception';
 import {Tokens} from '../lexer';
-import { PepperMintNull } from '../none';
+import {PepperMintNull} from '../none';
 import {LexerPosition} from '../position';
 import {ArithmeticOperations} from './arithmetic';
 import {ParserResult} from './result';
@@ -83,6 +83,15 @@ export class PepperMintParser {
     ]);
   };
 
+  /**
+   * @private
+   *
+   * Execute some builtin commands that start with an
+   * @ symbol
+   *
+   * @param functionName The name of the bultitn function with the
+   * type of a PeppermintToken
+   */
   private executeBuiltins = (functionName: Tokens<any>): void => {
     const func = String(functionName.token).split(':');
     if (func[0] == 'exit') {
@@ -95,16 +104,21 @@ export class PepperMintParser {
       }
       element = element ? element : 'None';
       console.log(element);
-    } else if (func[0] == "argv") {
-      let element:Array<string> | string | undefined | PepperMintNull = undefined
-      if(func[1]){
-        element = parseInt(func[1])!= NaN ? this.cli[parseInt(func[1])] : this.cli
+    } else if (func[0] == 'argv') {
+      let element:
+        | Array<string>
+        | string
+        | undefined
+        | PepperMintNull = undefined;
+      if (func[1]) {
+        element =
+          parseInt(func[1]) != NaN ? this.cli[parseInt(func[1])] : this.cli;
       } else {
-        element = this.cli
+        element = this.cli;
       }
-      element = element ? element : new PepperMintNull()
-      console.log(element)
+      element = element ? element : new PepperMintNull();
+      console.log(element);
     }
-    console.log(func)
+    console.log(func);
   };
 }
