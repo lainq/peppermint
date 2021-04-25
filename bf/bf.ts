@@ -1,85 +1,86 @@
-import { stdin } from "node:process";
-import { stdout } from "process";
-import { createInterface, Interface } from "readline";
-import { colours, throwColoredText } from "../modules/colors";
+import * as readline from "readline";
+import { instructions } from "./constants";
 
-const readlineInterface:Interface = createInterface({
-    input : stdin,
-    output : stdout
-})
+type Instruction = "+" | "-" | ">" | "<" | "[" | "]" | "." | ",";
 
+export interface Bf {
+  cells: Uint8Array;
+  pointers: {
+    instructions: number;
+    data: number;
+  };
+  program: Instruction[];
+  jumps: Jumps;
+  output: string;
+  done: boolean;
+}
+
+interface Jumps {
+  [jump: number]: number;
+}
+
+
+function mapJumps(program: Instruction[]): Jumps {
+  const jumps: Jumps = {};
+  const brackets: number[] = [];
+
+  program.forEach((instruction:Instruction, address:number) => {
+    if (instruction === "[") {
+        brackets.push(address);
+      } else if (instruction === "]") {
+        const start = brackets.pop();
+        if (start !== undefined) {
+          jumps[start] = address;
+          jumps[address] = start;
+        }
+      }
+  })
+    
+  return jumps;
+}
+
+function parse(program: string): Instruction[] {
+  return program
+    .split("")
+    .filter(token => /[\[\].,<>+-]/.test(token)) as Instruction[];
+}
+
+export function load(source: string): Bf {
+  const program = parse(source);
+  const jumps = mapJumps(program);
+  return {
+    cells: new Uint8Array(30_000),
+    program,
+    pointers: {
+      data: 0,
+      instructions: 0
+    },
+    jumps,
+    output: "",
+    done: false
+  };
+}
+
+export const step = (system: Bf): any => {
+  if (system.pointers.instructions >= system.program.length) {
+    system.done = true;
+    return;
+  }
+  const instruction = system.program[system.pointers.instructions];
+  const func:Function | undefined = instructions.get(instruction)
+  if(func){
+      func(system)
+  }
+}
 
 export class BfInterpreter {
-    private memory:Array<number> = new Array(30000);
-    private cell:number = 1000;
-
-    private position:number = 0;
-    private output:string = "";
-    private loopStack:Array<any> = new Array();
-
-    private data:string;
-
-    constructor(data:string){
-        this.data = data
-        this.memory.fill(0)
-    }
-
-    public interpret = () => {
-        while(this.position < this.data.length){
-            switch(this.data[this.position]){
-                case "+" :
-                    this.memory[this.cell] += 1
-                    break
-                case "-":
-                    this.memory[this.cell] -= 1
-                    break
-                case ">":
-                    this.cell += 1
-                    break
-                case "<":
-                    this.cell -= 1
-                    break
-                case ".":
-                if(![10, 13].includes(this.memory[this.cell])){
-                    this.output += String.fromCharCode(this.memory[this.cell])
-                } else {
-                    stdout.write(this.output)
-                    this.output = ""
-                }
-                break
-                case ',':
-                    readlineInterface.question(throwColoredText(colours.fg.yellow, ">"), (answer) => {
-                        if(answer.length == 0){
-                            process.exit()
-                        } else {
-                            this.memory[this.cell] = answer.charCodeAt(0)
-                        }
-                        readlineInterface.close()
-                    })
-                    break
-                case '[':
-                    if (this.memory[this.cell]) {
-                            this.loopStack.push(this.position);
-                    } else {
-                        for (let k = this.position, j = 0; k < this.data.length; k++) {
-                                this.data[k] == '[' && j++;
-                                opcode[k] == ']' && j--;
-                                if (j == 0) break;
-                            }
-                            if (j == 0) ip = k;
-                            else {
-                                puts("Unmatched loop");
-                                return false;
-                            }
-                        }
-                        break;
-                    case ']':
-                        ip = loopstack.pop() - 1;
-                        break;
-                    default:
-                        break;
-            }
-            this.position += 1
+    static execute = (source:string) => {
+        const system:Bf = load(source)
+        while(!system.done) {
+            step(system)
         }
+
+        console.log(system.output)
     }
 }
+
