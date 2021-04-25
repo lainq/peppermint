@@ -36,18 +36,18 @@ export class PepperMintCli {
    * the flags and values
    */
   public parseCommandArguments = (): void | null => {
-    let cli = []
+    let cli = [];
     let cliEnabled = false;
     let current: string | null = this.currentArgument();
     let commandParams: Map<string, string> = new Map<string, string>();
     while (current != null) {
-      if(cliEnabled){
-        cli.push(current)
-        
-        this.position += 1
-        current = this.currentArgument()
+      if (cliEnabled) {
+        cli.push(current);
 
-        continue
+        this.position += 1;
+        current = this.currentArgument();
+
+        continue;
       }
       if (!current.startsWith('--')) {
         const exception = new PepperMintException({
@@ -56,13 +56,13 @@ export class PepperMintCli {
         }).throwException(true);
       }
 
-      if(this.command == "run" && current == "--args"){
-        cliEnabled = true
+      if (this.command == 'run' && current == '--args') {
+        cliEnabled = true;
 
-        this.position += 1
-        current = this.currentArgument()
+        this.position += 1;
+        current = this.currentArgument();
 
-        continue
+        continue;
       }
 
       const commandArguments = current.split('=');
@@ -95,7 +95,7 @@ export class PepperMintCli {
   private validateParameters = (
     command: string,
     params: Map<string, string>,
-    cli:Array<string>
+    cli: Array<string>
   ): void | null => {
     if (!Array.from(commands.keys()).includes(command)) {
       const exception = new PepperMintException({

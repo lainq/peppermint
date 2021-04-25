@@ -1,5 +1,6 @@
 import {PepperMintException} from '../../exceptions/exception';
 import {Tokens} from '../lexer';
+import { PepperMintNull } from '../none';
 import {LexerPosition} from '../position';
 import {ArithmeticOperations} from './arithmetic';
 import {ParserResult} from './result';
@@ -12,15 +13,15 @@ export class PepperMintParser {
 
   private currentToken: Tokens<any>;
   private lineNumber: number = 1;
-  private cli:Array<string>
+  private cli: Array<string>;
 
   /**
    * @constructor
    * @param tokens The array of tokens tokenised
    * by peppermint lexer
    */
-  constructor(tokens: Array<Tokens<any>>, cli:Array<string>) {
-    this.cli = cli
+  constructor(tokens: Array<Tokens<any>>, cli: Array<string>) {
+    this.cli = cli;
     this.tokens = tokens;
     this.currentToken = this.position.currentCharacter(this.tokens);
   }
@@ -33,7 +34,6 @@ export class PepperMintParser {
    * @returns The parser results
    */
   public parse = (): Array<Tokens<any>> => {
-    console.log(this.cli)
     while (this.currentToken != null) {
       if (this.currentToken.type == 'OPERATOR') {
         const nodes: Map<
@@ -60,8 +60,8 @@ export class PepperMintParser {
       } else if (this.currentToken.type == 'NEWLINE') {
         this.parserTokens.push(this.currentToken);
         this.lineNumber += 1;
-      } else if(this.currentToken.type == "builtin"){
-        this.executeBuiltins(this.currentToken)
+      } else if (this.currentToken.type == 'builtin') {
+        this.executeBuiltins(this.currentToken);
       }
 
       this.position.increment(1);
@@ -83,18 +83,28 @@ export class PepperMintParser {
     ]);
   };
 
-  private executeBuiltins = (functionName:Tokens<any>):void => {
-    const func = String(functionName.token).split(":")
-    if(func[0] == "exit"){
+  private executeBuiltins = (functionName: Tokens<any>): void => {
+    const func = String(functionName.token).split(':');
+    if (func[0] == 'exit') {
       // process.exit()
-    } else if(func[0] == "env"){
-      const key = func[1]
-      let element:NodeJS.ProcessEnv | string | undefined = process.env
-      if(key){
-        element = process.env[key]
+    } else if (func[0] == 'env') {
+      const key = func[1];
+      let element: NodeJS.ProcessEnv | string | undefined = process.env;
+      if (key) {
+        element = process.env[key];
       }
-      element = element ? element :"None"
+      element = element ? element : 'None';
+      console.log(element);
+    } else if (func[0] == "argv") {
+      let element:Array<string> | string | undefined | PepperMintNull = undefined
+      if(func[1]){
+        element = parseInt(func[1])!= NaN ? this.cli[parseInt(func[1])] : this.cli
+      } else {
+        element = this.cli
+      }
+      element = element ? element : new PepperMintNull()
       console.log(element)
     }
-  }
+    console.log(func)
+  };
 }

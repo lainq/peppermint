@@ -1,6 +1,6 @@
-import { platform } from 'os';
-import { throwColoredText, colours } from '../modules/colors';
-import { PEPPERMINT_VERSION } from '../src/index';
+import {platform} from 'os';
+import {throwColoredText, colours} from '../modules/colors';
+import {PEPPERMINT_VERSION} from '../src/index';
 import {PepperMintProject} from './project/init';
 import {PepperMintProjectList} from './project/list';
 import {PepperMintExecutor} from './run/run';
@@ -15,7 +15,7 @@ export const commands: Map<string, Array<string>> = new Map<
   ['init', ['name', 'license', 'author']],
   ['list', []],
   ['run', ['file']],
-  ["version" , []]
+  ['version', []],
 ]);
 
 /**
@@ -25,18 +25,23 @@ export const commands: Map<string, Array<string>> = new Map<
 export const performCommand = (
   command: string,
   params: Map<string, string>,
-  cli:Array<string>
+  cli: Array<string>
 ) => {
   if (command == 'init') {
     const project: PepperMintProject = new PepperMintProject(params);
   } else if (command == 'list') {
     const list: PepperMintProjectList = new PepperMintProjectList();
   } else if (command == 'run') {
-    const run: PepperMintExecutor = new PepperMintExecutor(params.get('file'), cli);
-  } else if(command == "version"){
-    console.log(throwColoredText(
-      colours.fg.yellow,
-      `Peppermint Version ${PEPPERMINT_VERSION}[${platform()}]`
-    ))
+    const run: PepperMintExecutor = new PepperMintExecutor(
+      params.get('file'),
+      cli
+    );
+  } else if (command == 'version') {
+    console.log(
+      throwColoredText(
+        colours.fg.yellow,
+        `Peppermint Version ${PEPPERMINT_VERSION}[${platform()}]`
+      )
+    );
   }
 };

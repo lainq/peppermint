@@ -9,7 +9,7 @@ import {PepperMintParser} from '../../src/lang/parser/parser';
  * Run a peppermin source
  * @param {string} file The file to run
  */
-export const run = (file: string, cli:Array<string>) => {
+export const run = (file: string, cli: Array<string>) => {
   readFile(file, (error: NodeJS.ErrnoException | null, data: Buffer) => {
     if (error) {
       const exception = new PepperMintException({
@@ -20,9 +20,7 @@ export const run = (file: string, cli:Array<string>) => {
         data.toString(),
         file
       ).generateTokens();
-      console.log(tokens);
       const parser = new PepperMintParser(tokens, cli).parse();
-      console.log(parser);
     }
   });
 };
@@ -35,7 +33,7 @@ export class PepperMintExecutor {
    * @param {string | undefined} source The source parameter passed along
    * with the command in the command line
    */
-  constructor(source: string | undefined, cli:Array<string>) {
+  constructor(source: string | undefined, cli: Array<string>) {
     this.source = source ? source : this.findProjectMain();
     if (this.source) {
       // if source files exists
@@ -81,7 +79,6 @@ export class PepperMintExecutor {
         // json data
         return String(config.main);
       } catch (exception) {
-        console.log(exception);
         const error = new PepperMintException({
           message: '.peppermint not a valid config file',
           suggestion: 'Try creating a project using the peppermint cli',
