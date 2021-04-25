@@ -31,7 +31,7 @@ class OutputPadding {
      */
     static createMultipleCharacters = (character:string, num:number) => {
         let string:string = '';
-        for (let i = 0; i < num; i++) s += character;
+        for (let i = 0; i < num; i++) string += character;
         return string;
     }
 }
