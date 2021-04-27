@@ -10,7 +10,7 @@
 import {instructions} from './constants';
 
 // the instructions in the bf language
-type Instruction = '+' | '-' | '>' | '<' | '[' | ']' | '.' | ',';
+export type Instruction = '+' | '-' | '>' | '<' | '[' | ']' | '.' | ',';
 
 export interface Bf {
   // the memory cells
@@ -67,7 +67,7 @@ function mapJumps(program: Instruction[]): Jumps {
  * @returns {Instruction[]} The source code tokenised into
  * an array of istructions
  */
-function parse(program: string): Instruction[] {
+export function parse(program: string): Instruction[] {
   return program
     .split('')
     .filter((token) => /[\[\].,<>+-]/.test(token)) as Instruction[];
