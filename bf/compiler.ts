@@ -7,16 +7,29 @@ import {Instruction, parse} from './bf';
 
 // the print statements in the bf code
 interface Logs {
-    // the current cell value when the print
-    // statement was called
+  // the current cell value when the print
+  // statement was called
   currentValue: number;
 }
 
 interface CompilerOutput {
+  // The files in which the compiled long
+  // code should be stored
+  // The file = <cwd> / dist / <filename>
   filename?: Array<string>;
+
+  // the compiled output
   compiled: string;
 }
 
+/**
+ * @constant
+ *
+ * Stores the compiled code into dist files
+ *
+ * @param {CompilerOutput} output The compiler output interface object
+ * containing the output files and the compiled code
+ */
 const createLongOutput = (output: CompilerOutput): void => {
   const filenames: Array<string> = output.filename
     ? output.filename
@@ -55,6 +68,10 @@ export class BfLongCompiler {
   private longLogs: Array<Logs> = new Array();
   private longIndex: number = 0;
 
+  /**
+   * @constructor
+   * @param {string} source The source code
+   */
   constructor(source: string) {
     this.source = source;
     this.tokens = parse(this.source);
@@ -62,6 +79,11 @@ export class BfLongCompiler {
     this.convertLong();
   }
 
+  /**
+   * @private
+   *
+   * The main process
+   */
   private convertLong = (): void | null => {
     let character: Instruction | null = this.position.currentCharacter(
       this.tokens
@@ -79,6 +101,14 @@ export class BfLongCompiler {
     });
   };
 
+  /**
+   * @private
+   *
+   * Returns the compiled form of brainfuck(in long)
+   *
+   * @param logs All the print statements
+   * @returns {string} The compiled output
+   */
   private createCompiledString = (logs: Array<Logs>): string => {
     let compiled: string = '';
     let value = 0;
@@ -97,6 +127,13 @@ export class BfLongCompiler {
     return compiled;
   };
 
+  /**
+   * @private
+   *
+   * Add specific tokens to the token  list
+   *
+   * @param character The current character or instruction
+   */
   private createTokens = (character: Instruction | null): void => {
     if (character == '+') {
       this.longTokens[this.longIndex] += 1;
