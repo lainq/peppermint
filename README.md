@@ -20,6 +20,7 @@
     <img src="https://img.shields.io/github/forks/pranavbaburaj/peppermint.svg?style=social&label=Fork&style=plastic">
     <img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103">
     <img src="https://img.shields.io/github/last-commit/pranavbaburaj/peppermint">
+    <img src="https://tokei.rs/b1/github/pranavbaburaj/peppermint">
   </p>
   <br />
 
