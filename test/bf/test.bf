@@ -1,16 +1,23 @@
-++        Cell c0 = 2
-> +++++  Cell c1 = 5
+This program prints "Hello World!" on screen
 
-[        Start your loops with your cell pointer on the loop counter (c1 in our case)
-< +      Add 1 to c0
-> -      Subtract 1 from c1
-]        End your loops with the cell pointer on the loop counter
-
-
-++++ ++++  c1 = 8 and this will be our loop counter again
-[
-< +++ +++  Add 6 to c0
-> -        Subtract 1 from c1
++++++ +++++             initialize counter (cell #0) to 10
+[                       use loop to set 70/100/30/10
+    > +++++ ++              add  7 to cell #1
+    > +++++ +++++           add 10 to cell #2
+    > +++                   add  3 to cell #3
+    > +                     add  1 to cell #4
+<<<< -                  decrement counter (cell #0)
 ]
-< .        Print out c0 which has the value 55 which translates to "7"!
-
+> ++ .                  print 'H'
+> + .                   print 'e'
++++++ ++ .              print 'l'
+.                       print 'l'
++++ .                   print 'o'
+> ++ .                  print ' '
+<< +++++ +++++ +++++ .  print 'W'
+> .                     print 'o'
++++ .                   print 'r'
+----- - .               print 'l'
+----- --- .             print 'd'
+> + .                   print '!'
+> .                     print '\n'
