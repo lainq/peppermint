@@ -4,7 +4,8 @@
   "description": "A simple programming language created for fun :wink:",
   "main": "index.js",
   "scripts": {
-    "test": "ts-node src/index.ts run --file=examples/app.ppm --args hello wolrd"
+    "test": "ts-node src/index.ts run --file=examples/app.ppm --args hello wolrd",
+    "bf" : "ts-node src/index.ts bf"
   },
   "repository": {
     "type": "git",

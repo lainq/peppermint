@@ -1,4 +1,5 @@
 import {platform} from 'os';
+import { RunBfInterpreter } from '../bf/run';
 import {throwColoredText, colours} from '../modules/colors';
 import {PEPPERMINT_VERSION} from '../src/index';
 import {PepperMintProject} from './project/init';
@@ -45,6 +46,6 @@ export const performCommand = (
       )
     );
   } else if(command == "bf") {
-    
+    const bf = new RunBfInterpreter(params)
   }
 };
