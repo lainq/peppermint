@@ -7,6 +7,11 @@ export class RunBfInterpreter {
     private filename:string | undefined;
     private compiler:boolean;
 
+    /**
+     * @constructor
+     * @param {Map<string, string} params The parameters passed in along with
+     * the command in the cli
+     */
     constructor(params:Map<string, string>){
         this.filename = params.get("file")
         this.compiler = ["true", "True", "TRUE"].includes(String(params.get("compile"))) ? true : false
@@ -14,13 +19,27 @@ export class RunBfInterpreter {
         this.runBfSource()
     }
 
-    private runBfSource = ():void | null => {
+    /**
+     * @private
+     * 
+     * Run the bf source after checking certain conditions
+     * and making sure everything will work well
+     * 
+     * @returns {void}
+     */
+    private runBfSource = ():void => {
+        // Check if the file exists and also
+        // check if the path is an actual file and 
+        // not a directory. If all conditions are
+        // passed the file is read and executed
         if(!this.checkFileExistence(this.filename)){
             const exception = new PepperMintException({
                 message : `${this.filename} - File not found`
             }).throwException(true)
         }
 
+        // If filename exists, read the file and execute the 
+        // bf source using the bf interpreter
         if(this.filename) {
             readFile(this.filename, (error:NodeJS.ErrnoException | null, data:Buffer) => {
                 if(error){
@@ -36,6 +55,16 @@ export class RunBfInterpreter {
         }
     }
 
+    /**
+     * @private
+     * 
+     * Check if a path exists and also check if the path
+     * is actually a file and not a directory
+     * 
+     * @param {string | undefined} filename The path to check the existence
+     * @returns {boolean} Returns a boolean whether the path exists and
+     * that the path is actually a file
+     */
     private checkFileExistence = (filename:string | undefined):boolean => {
         if(!filename){
             return false

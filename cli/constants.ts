@@ -13,10 +13,27 @@ export const commands: Map<string, Array<string>> = new Map<
   string,
   Array<string>
 >([
+  /**
+   * name - The name of the project[required]
+   * license - The project license[optional]
+   * author - The author of the project[optional]
+   */
   ['init', ['name', 'license', 'author']],
   ['list', []],
+  /**
+   * file - The file to run[optional]{default=Get the entry point file from
+   * the current project}
+   */
   ['run', ['file']],
   ['version', []],
+  /**
+   * file - The bf source file[required]
+   * compiler - Whether to compile bf into long lang(
+   * btw, long lang is an esoteric programming language
+   * created by the @author @pranavbaburaj. The language is heavily
+   * isnpired from bf
+   * )
+   */
   ['bf', ["file", "compile"]]
 ]);
 
