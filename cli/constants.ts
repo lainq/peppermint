@@ -1,5 +1,5 @@
 import {platform} from 'os';
-import { RunBfInterpreter } from '../bf/run';
+import {RunBfInterpreter} from '../bf/run';
 import {throwColoredText, colours} from '../modules/colors';
 import {PEPPERMINT_VERSION} from '../src/index';
 import {PepperMintProject} from './project/init';
@@ -34,7 +34,7 @@ export const commands: Map<string, Array<string>> = new Map<
    * isnpired from bf
    * )
    */
-  ['bf', ["file", "compile"]]
+  ['bf', ['file', 'compile']],
 ]);
 
 /**
@@ -62,7 +62,7 @@ export const performCommand = (
         `Peppermint Version ${PEPPERMINT_VERSION}[${platform()}]`
       )
     );
-  } else if(command == "bf") {
-    const bf = new RunBfInterpreter(params)
+  } else if (command == 'bf') {
+    const bf = new RunBfInterpreter(params);
   }
 };
