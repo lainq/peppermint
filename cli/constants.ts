@@ -16,6 +16,7 @@ export const commands: Map<string, Array<string>> = new Map<
   ['list', []],
   ['run', ['file']],
   ['version', []],
+  ['bf', ["file", "compile"]]
 ]);
 
 /**
@@ -43,5 +44,7 @@ export const performCommand = (
         `Peppermint Version ${PEPPERMINT_VERSION}[${platform()}]`
       )
     );
+  } else if(command == "bf") {
+    
   }
 };
