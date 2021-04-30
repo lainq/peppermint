@@ -21,6 +21,7 @@
     <img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103">
     <img src="https://img.shields.io/github/last-commit/pranavbaburaj/peppermint">
     <img src="https://tokei.rs/b1/github/pranavbaburaj/peppermint">
+    <img src="https://app.codacy.com/project/badge/Grade/3f333a8c6eb9459281e8a368a0980f57"
   </p>
   <br />
 
