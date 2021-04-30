@@ -13,8 +13,8 @@
   </p>
   <br>
   <p align="center">
-    <img src="https://img.shields.io/github/issues-pr/pranavbaburaj/polyglot.svg?style=flat">
-    <img src="https://img.shields.io/github/contributors/pranavbaburaj/polyglot.svg?style=flat"> 
+    <img src="https://img.shields.io/github/issues-pr/pranavbaburaj/peppermint.svg?style=flat">
+    <img src="https://img.shields.io/github/contributors/pranavbaburaj/peppermint.svg?style=flat"> 
     <img src="https://img.shields.io/discord/808537055177080892.svg">
     <img src="https://img.shields.io/github/stars/pranavbaburaj/peppermint.svg?style=social&label=Stars&style=plastic">
     <img src="https://img.shields.io/github/forks/pranavbaburaj/peppermint.svg?style=social&label=Fork&style=plastic">
