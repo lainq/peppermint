@@ -1,3 +1,6 @@
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3e8ffde11b944e9ab92887b5afe5135)](https://app.codacy.com/gh/pranavbaburaj/peppermint?utm_source=github.com&utm_medium=referral&utm_content=pranavbaburaj/peppermint&utm_campaign=Badge_Grade_Settings)
+
 <p align="center">
   <img src="https://cdn.discordapp.com/attachments/827495236484726845/834349628974956544/peppermint.png" aly="logo">
   <h3 align="center">Pepper Mint</h3>
